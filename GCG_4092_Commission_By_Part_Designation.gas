@@ -1,0 +1,358 @@
+Program.Sub.ScreenSU.Start
+gui.SS_Form1..create
+gui.SS_Form1..caption("GCG Commission By Part")
+gui.SS_Form1..size(6490,4710)
+gui.SS_Form1..position(0,0)
+gui.SS_Form1..event(unload,ss_form1_unload)
+gui.SS_Form1..alwaysontop(False)
+gui.SS_Form1..fontname("Arial")
+gui.SS_Form1..fontsize(8)
+gui.SS_Form1..forecolor(0)
+gui.SS_Form1..fontstyle(,,,,)
+gui.SS_Form1..BackColor(-2147483633)
+gui.SS_Form1..controlbox(True)
+gui.SS_Form1..maxbutton(False)
+gui.SS_Form1..minbutton(False)
+gui.SS_Form1..mousepointer(0)
+gui.SS_Form1..moveable(True)
+gui.SS_Form1..sizeable(False)
+gui.SS_Form1..ShowInTaskBar(True)
+gui.SS_Form1..titlebar(True)
+gui.SS_Form1.lbl_txtPart.create(label,"Part",True,1800,200,1,100,135,True,0,Arial,8,-2147483633,0)
+gui.SS_Form1.txtPart.create(textbox,"",True,1800,330,0,100,335,True,0,Arial,8,16777215,1)
+gui.SS_Form1.lbl1.create(label,"",True,1800,200,1,1985,135,True,0,Arial,8,-2147483633,0)
+gui.SS_Form1.chk1.create(checkbox)
+gui.SS_Form1.chk1.caption("Primary Territory")
+gui.SS_Form1.chk1.visible(True)
+gui.SS_Form1.chk1.size(1800,300)
+gui.SS_Form1.chk1.zorder(0)
+gui.SS_Form1.chk1.position(4340,335)
+gui.SS_Form1.chk1.enabled(True)
+gui.SS_Form1.chk1.alignment(0)
+gui.SS_Form1.chk1.fontname("Arial")
+gui.SS_Form1.chk1.fontsize(8)
+gui.SS_Form1.lbl_txtSP.create(label,"Salesperson",True,1800,200,1,100,805,True,0,Arial,8,-2147483633,0)
+gui.SS_Form1.txtSP.create(textbox,"",True,1800,330,0,100,1005,True,0,Arial,8,16777215,1)
+gui.SS_Form1.cmd_txtSP.create(button)
+gui.SS_Form1.cmd_txtSP.caption("^")
+gui.SS_Form1.cmd_txtSP.visible(True)
+gui.SS_Form1.cmd_txtSP.size(330,330)
+gui.SS_Form1.cmd_txtSP.zorder(0)
+gui.SS_Form1.cmd_txtSP.position(1985,1005)
+gui.SS_Form1.cmd_txtSP.enabled(True)
+gui.SS_Form1.cmd_txtSP.fontname("Arial")
+gui.SS_Form1.cmd_txtSP.fontsize(8)
+gui.SS_Form1.cmd_txtSP.event(click,cmd_txtsp_click)
+gui.SS_Form1.lbl_txtSPName.create(label,"Name",True,1800,200,1,2455,805,True,0,Arial,8,-2147483633,0)
+gui.SS_Form1.txtSPName.create(textbox,"",True,1800,330,0,2455,1005,True,0,Arial,8,16777215,1)
+gui.SS_Form1.lbl_txtPrct.create(label,"Comission Percent",True,1800,200,1,4340,805,True,0,Arial,8,-2147483633,0)
+gui.SS_Form1.txtPrct.create(textbox,"",True,1800,330,0,4340,1005,True,0,Arial,8,16777215,1)
+gui.SS_Form1.cmdAdd.create(button)
+gui.SS_Form1.cmdAdd.caption("Add")
+gui.SS_Form1.cmdAdd.visible(True)
+gui.SS_Form1.cmdAdd.size(1000,360)
+gui.SS_Form1.cmdAdd.zorder(0)
+gui.SS_Form1.cmdAdd.position(100,1505)
+gui.SS_Form1.cmdAdd.enabled(True)
+gui.SS_Form1.cmdAdd.fontname("Arial")
+gui.SS_Form1.cmdAdd.fontsize(8)
+gui.SS_Form1.cmdAdd.event(click,cmdadd_click)
+gui.SS_Form1.cmdCleat.create(button)
+gui.SS_Form1.cmdCleat.caption("Clear")
+gui.SS_Form1.cmdCleat.visible(True)
+gui.SS_Form1.cmdCleat.size(1000,360)
+gui.SS_Form1.cmdCleat.zorder(0)
+gui.SS_Form1.cmdCleat.position(1185,1505)
+gui.SS_Form1.cmdCleat.enabled(True)
+gui.SS_Form1.cmdCleat.fontname("Arial")
+gui.SS_Form1.cmdCleat.fontsize(8)
+gui.SS_Form1.cmdCleat.event(click,clearfields)
+gui.SS_Form1.cmdDelete.create(button)
+gui.SS_Form1.cmdDelete.caption("Delete")
+gui.SS_Form1.cmdDelete.visible(True)
+gui.SS_Form1.cmdDelete.size(1000,360)
+gui.SS_Form1.cmdDelete.zorder(0)
+gui.SS_Form1.cmdDelete.position(2270,1505)
+gui.SS_Form1.cmdDelete.enabled(True)
+gui.SS_Form1.cmdDelete.fontname("Arial")
+gui.SS_Form1.cmdDelete.fontsize(8)
+gui.SS_Form1.cmdDelete.event(click,cmddelete_click)
+gui.SS_Form1.lvwDesignations.create(listview)
+gui.SS_Form1.lvwDesignations.view(3)
+gui.SS_Form1.lvwDesignations.visible(True)
+gui.SS_Form1.lvwDesignations.size(6140,2000)
+gui.SS_Form1.lvwDesignations.zorder(0)
+gui.SS_Form1.lvwDesignations.position(100,2035)
+gui.SS_Form1.lvwDesignations.enabled(True)
+gui.SS_Form1.lvwDesignations.fontname("Arial")
+gui.SS_Form1.lvwDesignations.fontsize(8)
+gui.SS_Form1.lvwDesignations.event(itemclick,lvwdesignations_itemclick)
+gui.SS_Form1.txtSP.tabstop(true)
+gui.SS_Form1.txtSP.tabindex(1)
+gui.SS_Form1.cmd_txtSP.tabstop(true)
+gui.SS_Form1.cmd_txtSP.tabindex(2)
+
+
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+Variable.Global.iOrdinal.Declare(Long,0)
+Variable.Global.sKey.Declare(String)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Coded by: JCT
+'Project Start Date: 07/29/2011
+'1-16-12 - jct - added checkbox to screen to designate "Primary Territory"
+
+'Hooks:
+'  10120 - populate
+'  10220 - script2 button
+'Other Components:
+'  GCG_Commision_By_Part_Report
+'Notes:
+'for Piad
+
+F.ODBC.Connection!Con.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+V.Local.sPart.Declare(String)
+
+'poplate hook - rename script2 button
+F.Intrinsic.Control.If(V.Caller.hook,=,10120)
+	V.Passed.000069.Set("Commissions")
+	F.Intrinsic.Control.CallSub(Ss_form1_unload)
+
+'script2 hook
+F.Intrinsic.Control.elseIf(V.Caller.Hook,=,10220)
+	F.Intrinsic.Control.if(V.Passed.000007.Trim,=,"")
+		F.Intrinsic.Control.CallSub(Ss_form1_unload)
+	F.Intrinsic.Control.Else
+		F.Intrinsic.String.RPad(V.Passed.000007," ",17,V.Local.sPart)
+		F.Intrinsic.String.Concat(V.Local.sPart,V.Passed.000008,V.Local.sPart)
+		Gui.SS_Form1.txtPart.Text(V.Local.sPart)
+		F.Intrinsic.Control.CallSub(Populate_grid)
+		Gui.SS_Form1..Show
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+
+
+
+Program.Sub.Main.End
+
+program.sub.cmd_txtsp_click.start
+
+V.Local.sRet.Declare(String)
+V.Local.sTitles.Declare(String)
+V.Local.sWidths.Declare(String)
+V.Local.sSel.Declare(String)
+V.Local.spart.Declare(String)
+
+
+F.Intrinsic.String.Split("Salesperson*!*Name","*!*",V.Local.sTitles)
+F.Intrinsic.String.Split("1500*!*2500","*!*",V.Local.sWidths)
+F.Intrinsic.UI.MiniBrowser("Salesperson","Con","select distinct SALESPERSON_CODE,SALESPERSON from V_SALESPEOPLE order by SALESPERSON_CODE",V.Local.sTitles,V.Local.sWidths,V.Local.sRet)
+	F.Intrinsic.Control.If(V.Local.sRet,<>,"***CANCEL***")
+		F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+			Gui.SS_Form1.txtSP.Text(V.Local.sRet(0).Trim)
+			Gui.SS_Form1.txtSPName.Text(V.Local.sRet(1).Trim)
+
+			F.Intrinsic.String.RPad(V.Passed.000007," ",17,V.Local.spart)
+			F.Intrinsic.String.Concat(V.Local.spart,V.Passed.000008,V.Local.spart)
+			F.Intrinsic.String.Replace(V.Local.sPart,"'","''",V.Local.sPart)
+
+			F.Intrinsic.String.Concat("select PCT,Primary_Territory from GCG_4092_Part_Comm where SALESPERSON_CODE='",V.Local.sRet(0).Trim,"' and PART='",V.Local.spart.Trim,"'",V.Local.sSel)
+			F.ODBC.Connection!Con.OpenRecordsetRO("rstSel",V.Local.sSel)
+				F.Intrinsic.Control.If(V.ODBC.Con!rstSel.EOF,=,False)
+					F.Intrinsic.Control.If(V.ODBC.Con!rstSel.FieldValTrim!Primary_Territory,=,"Y")
+						Gui.SS_Form1.chk1.Value(1)
+					F.Intrinsic.Control.Else
+						Gui.SS_Form1.chk1.Value(0)
+					F.Intrinsic.Control.EndIf
+					Gui.SS_Form1.txtPrct.Text(V.ODBC.Con!rstSel.FieldValTrim!PCT)
+				F.Intrinsic.Control.EndIf
+			F.ODBC.Con!rstSel.Close
+
+	F.Intrinsic.Control.EndIf
+
+program.sub.cmd_txtsp_click.end
+
+program.sub.cmdadd_click.start
+
+
+V.Local.sSel.Declare(String)
+V.Local.sRet.Declare(String)
+V.Local.iOrd.Declare(Long)
+V.Local.sSP.Declare(String)
+V.Local.sName.Declare(String)
+V.Local.sPct.Declare(String)
+V.Local.sSelPart.Declare(String)
+V.Local.spart.Declare(String)
+V.Local.sPrimary.Declare(String)
+V.Local.bisnumeric.Declare(Boolean)
+
+V.Local.sSP.Set(V.Screen.SS_Form1!txtSP.Text)
+V.Local.sName.Set(V.Screen.SS_Form1!txtSPName.Text)
+F.Intrinsic.Math.IsNumeric(V.Screen.SS_Form1!txtPrct.Text,V.Local.bisnumeric)
+F.Intrinsic.Control.If(V.Local.bisnumeric,=,True)
+	F.Intrinsic.String.Format(V.Screen.SS_Form1!txtPrct.Text,"0.0000",V.Local.sPct)
+F.Intrinsic.Control.Else
+	V.Local.sPct.Set("0.0000")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.Screen.SS_Form1!chk1.Value,=,1)
+	V.Local.sPrimary.Set("Y")
+F.Intrinsic.Control.Else
+	V.Local.sPrimary.Set("N")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.RPad(V.Passed.000007," ",17,V.Local.spart)
+F.Intrinsic.String.Concat(V.Local.spart,V.Passed.000008,V.Local.spart)
+F.Intrinsic.String.Replace(V.Local.sPart,"'","''",V.Local.sSelPart)
+'add record to table
+F.Intrinsic.String.Concat("select * from GCG_4092_Part_Comm where PART='",V.Local.sSelpart.Trim,"' and SALESPERSON_CODE='",V.Local.sSP.trim,"'",V.Local.sSel)
+F.ODBC.Connection!Con.OpenRecordsetRW("rstSel",V.Local.sSel)
+'if record does not already exists, add a new record
+	F.Intrinsic.Control.If(V.ODBC.Con!rstSel.EOF,=,True)
+		F.ODBC.Con!rstSel.AddNew
+			F.ODBC.Con!rstSel.Set!PART(V.Local.spart.trim)
+			F.ODBC.Con!rstSel.Set!SALESPERSON_CODE(V.Local.sSP.trim)
+			F.ODBC.Con!rstSel.Set!Primary_Territory(V.Local.sPrimary)
+	F.Intrinsic.Control.Else
+'otherwise, remove the item from the list so it can be added back with correct value
+			Gui.SS_Form1.lvwDesignations.RemoveItem(V.Local.sSP.Trim)
+	F.Intrinsic.Control.EndIf
+'either way, update the name, prct,Primary Territory value
+			F.ODBC.Con!rstSel.Set!SALESPERSON(V.Local.sName.trim)
+			F.ODBC.Con!rstSel.Set!PCT(V.Local.sPct)
+			F.ODBC.Con!rstSel.Set!Primary_Territory(V.Local.sPrimary)
+		F.ODBC.Con!rstSel.Update
+F.ODBC.Con!rstSel.Close
+
+
+
+'add items to list vew
+Gui.SS_Form1.lvwDesignations.AddListItem(V.Local.sSP.trim,V.Local.sSP.trim)
+Gui.SS_Form1.lvwDesignations.SetListItemSubItemText(V.Local.sSP.Trim,1,V.Screen.SS_Form1!txtSPName.Text)
+Gui.SS_Form1.lvwDesignations.SetListItemSubItemText(V.Local.sSP.Trim,2,V.Screen.SS_Form1!txtPrct.Text)
+F.Intrinsic.Control.If(V.Local.sPrimary,<>,"Y")
+	V.Local.sPrimary.Set("")
+F.Intrinsic.Control.EndIf
+Gui.SS_Form1.lvwDesignations.SetListItemSubItemText(V.Local.sSP.Trim,3,V.Local.sPrimary)
+F.Intrinsic.Control.CallSub(Clearfields)
+
+program.sub.cmdadd_click.end
+
+program.sub.ss_form1_unload.start
+
+F.ODBC.Connection!Con.Close
+F.Intrinsic.Control.End
+
+program.sub.ss_form1_unload.end
+
+Program.Sub.Populate_Grid.Start
+
+V.Local.sSel.Declare(String)
+V.Local.sPart.Declare(String)
+
+Gui.SS_Form1.lvwDesignations.AddListViewColumn("Salesperson",1100,0)
+Gui.SS_Form1.lvwDesignations.AddListViewColumn("Name",3700,0)
+Gui.SS_Form1.lvwDesignations.AddListViewColumn("Percent",900,0)
+Gui.SS_Form1.lvwDesignations.AddListViewColumn("Prm Trtry",500,0)
+
+F.Intrinsic.String.RPad(V.Passed.000007," ",17,V.Local.sPart)
+F.Intrinsic.String.Concat(V.Local.sPart,V.Passed.000008,V.Local.sPart)
+F.Intrinsic.String.Replace(V.Local.sPart,"'","''",V.Local.sPart)
+
+F.Intrinsic.String.Concat("select * from GCG_4092_Part_Comm where PART='",V.Local.sPart.Trim,"' order by SALESPERSON_CODE",V.Local.sSel)
+F.ODBC.Connection!Con.OpenRecordsetRO("rstSel",V.Local.sSel)
+	F.Intrinsic.Control.DoUntil(V.ODBC.Con!rstSel.EOF,=,True)
+		Gui.SS_Form1.lvwDesignations.AddListItem(V.ODBC.Con!rstSel.FieldValTrim!SALESPERSON_CODE,V.ODBC.Con!rstSel.FieldValTrim!SALESPERSON_CODE)
+		Gui.SS_Form1.lvwDesignations.SetListItemSubItemText(V.ODBC.Con!rstSel.FieldValTrim!SALESPERSON_CODE,1,V.ODBC.Con!rstSel.FieldValTrim!SALESPERSON)
+		Gui.SS_Form1.lvwDesignations.SetListItemSubItemText(V.ODBC.Con!rstSel.FieldValTrim!SALESPERSON_CODE,2,V.ODBC.Con!rstSel.FieldValTrim!PCT)
+		Gui.SS_Form1.lvwDesignations.SetListItemSubItemText(V.ODBC.Con!rstSel.FieldValTrim!SALESPERSON_CODE,3,V.ODBC.Con!rstSel.FieldValTrim!Primary_Territory)
+	F.ODBC.Con!rstSel.MoveNext
+	F.Intrinsic.Control.Loop
+F.ODBC.Con!rstSel.Close
+
+Program.Sub.Populate_Grid.End
+
+Program.Sub.ClearFields.Start
+
+
+Gui.SS_Form1.txtPrct.Text("")
+Gui.SS_Form1.txtSP.Text("")
+Gui.SS_Form1.txtSPName.Text("")
+Gui.SS_Form1.chk1.Value(0)
+
+Program.Sub.ClearFields.End
+
+program.sub.lvwdesignations_itemclick.start
+
+
+V.Local.sRet.Declare(String)
+V.Local.sOrd.Declare(String)
+V.Local.iOrd.Declare(Long)
+V.Local.sKey.Declare(String)
+V.Local.iPrimary.Declare(Long)
+
+'get the item key
+Gui.SS_Form1.lvwDesignations.RetrieveSelectedListItems(V.Global.sKey)
+
+'get the item ordinal
+Gui.SS_Form1.lvwDesignations.RetrieveItemOrdinal(V.Global.sKey,V.Global.iOrdinal)
+
+'get the line of text
+V.Local.sRet.Set(V.Screen.SS_Form1!lvwDesignations.ListItemTextExtended(V.Global.iOrdinal))
+
+'split to get trmnl and comment
+	F.Intrinsic.String.Split(V.Local.sRet,"*!*",V.Local.sRet)
+
+'write values to text boxes
+	Gui.SS_Form1.txtSP.Text(V.Local.sRet(0))
+	Gui.SS_Form1.txtSPName.Text(V.Local.sRet(1))
+	Gui.SS_Form1.txtPrct.Text(V.Local.sRet(2))
+	F.Intrinsic.Control.If(V.Local.sRet(3),=,"Y")
+		Gui.SS_Form1.chk1.Value(1)
+	F.Intrinsic.Control.Else
+		Gui.SS_Form1.chk1.Value(0)
+	F.Intrinsic.Control.EndIf
+
+
+program.sub.lvwdesignations_itemclick.end
+
+program.sub.cmddelete_click.start
+
+V.Local.sRet.Declare(String)
+V.Local.sDel.Declare(String)
+V.Local.sPart.Declare(String)
+
+F.Intrinsic.String.Replace(V.Screen.SS_Form1!txtPart.Text,"'","''",V.Local.sPart)
+
+'delete from table
+F.Intrinsic.String.Concat("delete from GCG_4092_Part_Comm where SALESPERSON_CODE='",V.Screen.SS_Form1!txtSP.Text.trim,"' and PART='",v.Local.sPart.trim,"'",V.Local.sDel)
+F.ODBC.Connection!Con.Execute(V.Local.sDel)
+
+'remove the line from the view
+Gui.SS_Form1.lvwDesignations.RemoveItem(V.Global.sKey)
+
+'call sub to clear text boxes
+F.Intrinsic.Control.CallSub(Clearfields)
+
+program.sub.cmddelete_click.end
+
+Program.Sub.ScreenSS.Start
+SS_Form1{{CAPTION::GCG Commission By Part
+SS_Form1.CTRL{{NAME::txtPart\\TYPE::2\\CAPTION::Part\\GROUP::1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::lbl1\\TYPE::1\\GROUP::1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::chk1\\TYPE::9\\CAPTION::Primary Territory\\GROUP::1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::txtSP\\TYPE::2\\CAPTION::Salesperson\\TABSTOP::1\\GROUP::2\\BROWSER::1\\SIZE::1
+SS_Form1.CTRL{{NAME::txtSPName\\TYPE::2\\CAPTION::Name\\GROUP::2\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::txtPrct\\TYPE::2\\CAPTION::Comission Percent\\GROUP::2\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::cmdAdd\\TYPE::5\\CAPTION::Add\\GROUP::3\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::cmdCleat\\TYPE::5\\CAPTION::Clear\\GROUP::3\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::cmdDelete\\TYPE::5\\CAPTION::Delete\\GROUP::3\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::lvwDesignations\\TYPE::7\\GROUP::4\\BROWSER::0\\SIZE::1
+
+Program.Sub.ScreenSS.End
+

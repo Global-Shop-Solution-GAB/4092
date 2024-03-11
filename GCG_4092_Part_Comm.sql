@@ -1,0 +1,7 @@
+CREATE TABLE "GCG_4092_Part_Comm"(
+ "Part" VARCHAR(20) NOT NULL ,
+ "Salesperson_Code" VARCHAR(4) NOT NULL ,
+ "Salesperson" VARCHAR(30) NOT NULL ,
+ "PCT" NUMERIC(7,4) NOT NULL );
+
+CREATE UNIQUE NOT MODIFIABLE INDEX "GCGPC001" ON "GCG_4092_Part_Comm"("Part","Salesperson_Code");

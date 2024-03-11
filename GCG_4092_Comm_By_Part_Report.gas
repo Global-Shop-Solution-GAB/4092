@@ -1,0 +1,232 @@
+Program.Sub.ScreenSU.Start
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+
+
+Variable.UDT.CommRec.Define("Trmnl",String,"Trmnl")
+Variable.UDT.CommRec.Define("Invoice_Number",String,"Invoice_Number")
+Variable.UDT.CommRec.Define("Invoice_Date",DATE,"Invoice_Date")
+Variable.UDT.CommRec.Define("Order_Number",String,"Order_Number")
+Variable.UDT.CommRec.Define("Salesman",String,"Salesman")
+Variable.UDT.CommRec.Define("Salsm_Name",String,"Salsm_Name")
+Variable.UDT.CommRec.Define("From_Date",DATE,"From_Date")
+Variable.UDT.CommRec.Define("Thru_Date",DATE,"Thru_Date")
+Variable.UDT.CommRec.Define("Cust_Num",String,"Cust_Num")
+Variable.UDT.CommRec.Define("Name",String,"Name")
+Variable.UDT.CommRec.Define("Inv_Tot",Float,"Inv_Tot")
+Variable.UDT.CommRec.Define("Sales_Tax",Float,"Sales_Tax")
+Variable.UDT.CommRec.Define("Freight",Float,"Freight")
+Variable.UDT.CommRec.Define("Other_NC",Float,"Other_NC")
+Variable.UDT.CommRec.Define("Sales",Float,"Sales")
+Variable.UDT.CommRec.Define("Part",String,"Part")
+Variable.UDT.CommRec.Define("Part_NoX",String,"Part_NoX")
+Variable.UDT.CommRec.Define("State",String,"State")
+Variable.UDT.CommRec.Define("Comm_Rate",Float,"Comm_Rate")
+Variable.UDT.CommRec.Define("Comm_RateX",String,"Comm_RateX")
+Variable.UDT.CommRec.Define("Comm_Dollars",Float,"Comm_Dollars")
+Variable.uGlobal.uCommRec.Declare("CommRec")
+
+Variable.UDT.CommByPart.Define("Trmnl",String,"Trmnl")
+Variable.UDT.CommByPart.Define("Invoice_Number",String,"Invoice_Number")
+Variable.UDT.CommByPart.Define("Invoice_Date",DATE,"Invoice_Date")
+Variable.UDT.CommByPart.Define("Order_Number",String,"Order_Number")
+Variable.UDT.CommByPart.Define("Salesman",String,"Salesman")
+Variable.UDT.CommByPart.Define("Salsm_Name",String,"Salsm_Name")
+Variable.UDT.CommByPart.Define("From_Date",DATE,"From_Date")
+Variable.UDT.CommByPart.Define("Thru_Date",DATE,"Thru_Date")
+Variable.UDT.CommByPart.Define("Cust_Num",String,"Cust_Num")
+Variable.UDT.CommByPart.Define("Name",String,"Name")
+Variable.UDT.CommByPart.Define("Inv_Tot",Float,"Inv_Tot")
+Variable.UDT.CommByPart.Define("Sales_Tax",Float,"Sales_Tax")
+Variable.UDT.CommByPart.Define("Freight",Float,"Freight")
+Variable.UDT.CommByPart.Define("Other_NC",Float,"Other_NC")
+Variable.UDT.CommByPart.Define("Sales",Float,"Sales")
+Variable.UDT.CommByPart.Define("Part",String,"Part")
+Variable.UDT.CommByPart.Define("Part_NoX",String,"Part_NoX")
+Variable.UDT.CommByPart.Define("State",String,"State")
+Variable.UDT.CommByPart.Define("Comm_Rate",Float,"Comm_Rate")
+Variable.UDT.CommByPart.Define("Comm_RateX",String,"Comm_RateX")
+Variable.UDT.CommByPart.Define("Comm_Dollars",Float,"Comm_Dollars")
+Variable.uGlobal.uCommByPart.Declare("CommByPart")
+
+Variable.UDT.CommPart.Define("Part",String,"Part")
+Variable.UDT.CommPart.Define("Salesperson_Code",String,"Salesperson_Code")
+Variable.UDT.CommPart.Define("Salesperson",String,"Salesperson")
+Variable.UDT.CommPart.Define("Pct",Float,"Pct")
+Variable.uGlobal.uCommPart.Declare("CommPart")
+
+Variable.UDT.HistPart.Define("Part",String,"Part")
+Variable.UDT.HistPart.Define("QTY_Shipped",Float,"QTY_Shipped")
+Variable.UDT.HistPart.Define("Extension_Order",Float,"Extension_Order")
+Variable.uGlobal.uHistPart.Declare("HistPart")
+
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+'Coded by: JCT
+'Project Start Date: 07/31/2011
+'for PIAD
+'used with GCG_Commission_By_Part_Designation.gas
+
+V.Local.sDel.Declare(String)
+
+F.ODBC.Connection!Con.OpenConnection(V.Ambient.PDSN,V.Ambient.PUser,V.Ambient.PPass)
+F.Intrinsic.Control.If(V.Caller.Hook,=,16090)
+	F.Intrinsic.Control.If(V.Passed.009001,=,"000566")
+		V.Passed.CANCEL.Set(1)
+		F.Intrinsic.String.Concat("delete from GCG_4092_Comm_ByPart  where TRMNL='",V.Caller.Terminal,"'",V.Local.sDel)
+		F.ODBC.Connection!Con.Execute(V.Local.sDel)
+		F.Intrinsic.Control.CallSub(Commissiondesignation)
+		F.Intrinsic.Control.CallSub(Printreport)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.CallSub(Unload)
+
+Program.Sub.Main.End
+
+Program.Sub.CommissionDesignation.Start
+
+
+'CHECK-CODE
+'CHECK-DATE
+V.Local.sSel.Declare(String)
+V.Local.sSelB.Declare(String)
+V.Local.sSelC.Declare(String)
+V.Local.sSelD.Declare(String)
+V.Local.sSelE.Declare(String)
+V.Local.sSelF.Declare(String)
+V.Local.sChkDte.Declare(String)
+V.Local.sM.Declare(String)
+V.Local.sY.Declare(String)
+V.Local.sRecordSet.Declare(String)
+V.Local.sSplit.Declare(String)
+V.Local.sInsert.Declare(String)
+V.Local.sString.Declare(String)
+V.Local.sRep.Declare(String)
+V.Local.sReplace.Declare(String)
+V.Local.sWith.Declare(String)
+V.Local.sDelete.Declare(String)
+'V.Local.lRcdCount.Declare(Long)
+V.Local.fCommission.Declare(Float)
+V.Local.sCommission.Declare(String)
+V.Local.sPct.Declare(String)
+V.Local.fPct.Declare(Float)
+V.Local.iFor.Declare(Long)
+V.Local.iForPart.Declare(Long)
+V.Local.iForHist.Declare(Long)
+V.Local.sPart.Declare(String)
+V.Local.iRecCount.Declare(Long)
+
+V.uGlobal.uCommRec.Redim(-1,-1)
+V.Local.iRecCount.set(-1)
+'get all order/invoice
+F.Intrinsic.string.Concat("select TRMNL,INVOICE_NUMBER,INVOICE_DATE,ORDER_NUMBER,SALESMAN,SALSM_NAME,FROM_DATE,THRU_DATE,CUST_NUM,NAME,INV_TOT,SALES_TAX,STATE,FREIGHT,OTHER_NC,SALES,PART,PART_NOX,COMM_RATE,COMM_RATEX,COMM_DOLLARS from V_BI_SALES_REP_COMM where REC_TYPE='1' and RPTID='000566' and TRMNL='",V.Caller.Terminal,"'",V.Local.sSel)
+F.ODBC.Connection!Con.OpenRecordsetRO("rstA",V.Local.sSel)
+	F.Intrinsic.Control.If(V.ODBC.Con!rstA.EOF,=,False)
+		F.Intrinsic.Variable.LoadUDTFromRecordset("Con","rstA","variable.uGlobal.uCommRec",False,0)
+	F.Intrinsic.Control.EndIf
+F.ODBC.Con!rstA.Close
+
+F.Intrinsic.string.Concat("select TRMNL,INVOICE_NUMBER,INVOICE_DATE,ORDER_NUMBER,SALESMAN,SALSM_NAME,FROM_DATE,THRU_DATE,CUST_NUM,NAME,INV_TOT,SALES_TAX,STATE,FREIGHT,OTHER_NC,SALES,PART,PART_NOX,COMM_RATE,COMM_RATEX,COMM_DOLLARS from GCG_4092_Comm_ByPart","",V.Local.sSel)
+F.ODBC.Connection!Con.OpenRecordsetRW("rstA",V.Local.sSel)
+
+F.Intrinsic.Control.For(V.Local.iFor,0,V.uGlobal.uCommRec!Trmnl.UBound,1)
+	V.uGlobal.uHistPart.Redim(-1,-1)
+	F.Intrinsic.String.Concat("select PART, QTY_SHIPPED, EXTENSION_ORDER from V_ORDER_HIST_LINE where INVOICE='",V.uGlobal.uCommRec(v.Local.iFor)!Invoice_Number,"' and ORDER_NO='",V.uGlobal.uCommRec(v.Local.iFor)!ORDER_NUMBER,"' and ORDER_LINE<>'8000'",V.Local.sSelB)
+	F.Intrinsic.String.Concat(V.Local.sSelB,"and DATE_INVOICE between'",V.uGlobal.uCommRec(v.Local.iFor)!From_Date.PervasiveDate,"' and '",V.uGlobal.uCommRec(v.Local.iFor)!Thru_Date.PervasiveDate,"'",V.Local.sSelB)
+	F.ODBC.Connection!Con.OpenRecordsetRO("rstB",V.Local.sSelB)
+		F.Intrinsic.Control.If(V.ODBC.Con!rstB.EOF,=,False)
+			F.Intrinsic.Variable.LoadUDTFromRecordset("Con","rstB","variable.uGlobal.uHistPart",False,0)
+		F.Intrinsic.Control.EndIf
+	F.ODBC.Con!rstB.Close
+
+	F.Intrinsic.Control.For(V.Local.iForHist,V.uGlobal.uHistPart!Part.LBound,V.uGlobal.uHistPart!Part.UBound,1)
+
+'		F.Intrinsic.String.RPad(V.uGlobal.uHistPart(v.Local.iForHist)!Part," ",17,V.Local.sPart)
+		V.uGlobal.uCommPart.Redim(-1,-1)
+		F.Intrinsic.String.Concat("select PART,SALESPERSON,SALESPERSON_CODE,PCT from GCG_4092_Part_Comm where PART='",V.uGlobal.uHistPart(v.Local.iForHist)!Part,"'",V.Local.sSelC)
+		F.ODBC.Connection!Con.OpenRecordsetRO("rstC",V.Local.sSelC)
+			F.Intrinsic.Control.If(V.ODBC.Con!rstC.EOF,=,False)
+				F.Intrinsic.Variable.LoadUDTFromRecordset("Con","rstC","variable.uGlobal.uCommPart",False,0)
+			F.Intrinsic.Control.EndIf
+		F.ODBC.Con!rstC.Close
+
+		F.Intrinsic.String.Concat("select AMT_PRICE from INVENTORY_MSTR where PART='",V.uGlobal.uHistPart(v.Local.iForHist)!Part,"'",V.Local.sSelD)
+		F.ODBC.Connection!Con.OpenRecordsetRO("rstD",V.Local.sSelD)
+			F.Intrinsic.Control.If(V.ODBC.Con!rstD.EOF,=,False)
+				F.Intrinsic.Math.Mult(V.ODBC.Con!rstD.FieldVal!AMT_PRICE,V.uGlobal.uHistPart(v.Local.iForHist)!QTY_Shipped,V.uGlobal.uCommRec(v.Local.iFor)!Sales)
+				F.Intrinsic.Math.Round(V.uGlobal.uCommRec(v.Local.iFor)!Sales,2,V.uGlobal.uCommRec(v.Local.iFor)!Sales)
+			F.Intrinsic.Control.EndIf
+		F.ODBC.Con!rstD.Close
+
+		F.Intrinsic.Control.For(V.Local.iForPart,0,V.uGlobal.uCommPart!Salesperson_Code.UBound,1)
+			F.Intrinsic.Math.Div(V.uGlobal.uCommPart(v.Local.iForPart)!Pct,100,V.uGlobal.uCommPart(v.Local.iForPart)!Pct)
+			F.Intrinsic.Math.Mult(V.uGlobal.uCommPart(v.Local.iForPart)!Pct,V.uGlobal.uCommRec(v.Local.iFor)!Sales,V.Local.fCommission)
+			F.Intrinsic.String.Format(V.Local.fCommission,"0.0000",V.Local.scommission)
+			F.Intrinsic.Math.Add(V.Local.iRecCount,1,V.Local.iRecCount)
+			F.Intrinsic.Math.Sub(V.uGlobal.uCommRec(v.Local.iFor)!Inv_Tot,V.uGlobal.uCommRec(v.Local.iFor)!Sales,V.uGlobal.uCommRec(v.Local.iFor)!Other_NC)
+			V.uGlobal.uCommByPart.Redimpreserve(0,V.Local.iRecCount)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Trmnl.Set(V.Caller.Terminal)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Invoice_Number.Set(V.uGlobal.uCommRec(v.Local.iFor)!Invoice_Number)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Invoice_Date.Set(V.uGlobal.uCommRec(v.Local.iFor)!Invoice_Date)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Order_Number.Set(V.uGlobal.uCommRec(v.Local.iFor)!Order_Number)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Salesman.Set(V.uGlobal.uCommPart(v.Local.iForPart)!Salesperson_Code)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Salsm_Name.Set(V.uGlobal.uCommPart(v.Local.iForPart)!Salesperson)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!From_Date.Set(V.uGlobal.uCommRec(v.Local.iFor)!From_Date)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Thru_Date.Set(V.uGlobal.uCommRec(v.Local.iFor)!Thru_Date)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Cust_Num.Set(V.uGlobal.uCommRec(v.Local.iFor)!Cust_Num)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Name.Set(V.uGlobal.uCommRec(v.Local.iFor)!Name)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Inv_Tot.Set(V.uGlobal.uCommRec(v.Local.iFor)!Inv_Tot)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Sales_Tax.Set(V.uGlobal.uCommRec(v.Local.iFor)!Sales_Tax)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Freight.Set(V.uGlobal.uCommRec(v.Local.iFor)!Freight)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Other_NC.Set(V.uGlobal.uCommRec(v.Local.iFor)!Other_NC)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Sales.Set(V.uGlobal.uCommRec(v.Local.iFor)!Sales)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Part.Set(V.uGlobal.uHistPart(v.Local.iForHist)!Part)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Part_NoX.Set(V.uGlobal.uCommRec(v.Local.iFor)!Part_NoX)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!State.Set(V.uGlobal.uCommRec(v.Local.iFor)!State)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Comm_Rate.Set(V.uGlobal.uCommPart(v.Local.iForPart)!Pct)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Comm_RateX.Set(V.uGlobal.uCommRec(v.Local.iFor)!Comm_RateX)
+			V.uGlobal.uCommByPart(V.Local.iRecCount)!Comm_Dollars.Set(V.Local.sCommission)
+
+'			Function.Intrinsic.Variable.SaveUDTToRecordset("Con","rstA","variable.uGlobal.uCommByPart")
+		F.Intrinsic.Control.Next(V.Local.iForPart)
+	F.Intrinsic.Control.Next(V.Local.iForHist)
+
+
+F.Intrinsic.Control.Next(V.Local.iFor)
+	Function.Intrinsic.Variable.SaveUDTToRecordset("Con","rstA","variable.uGlobal.uCommByPart")
+F.ODBC.Con!rstA.Close
+
+F.Intrinsic.Debug.Stop
+
+Program.Sub.CommissionDesignation.End
+
+Program.Sub.Unload.Start
+
+
+F.ODBC.Connection!Con.Close
+F.Intrinsic.Control.End
+
+Program.Sub.Unload.End
+
+Program.Sub.PrintReport.Start
+
+
+V.Local.sParams.Declare(String)
+V.Local.sValues.Declare(String)
+V.Local.iRptId.Declare(Long)
+V.Local.sRptPath.Declare(String)
+
+V.Local.sParams.Set("Terminal")
+V.Local.sValues.Set(V.Caller.Terminal)
+
+F.Intrinsic.String.Concat(V.Caller.BusintDir,"\Custom\GCG_4092_Comm_By_Part.rpt",V.Local.sRptPath)
+F.Global.BI.InitializeReport("GCG_4092_Comm_By_Part",V.Local.sRptPath,V.Local.iRptId)
+
+F.Global.BI.PrintReport(V.Local.iRptId,0,V.Local.sParams,V.Local.sValues,"",False)
+
+Program.Sub.PrintReport.End
+
+
